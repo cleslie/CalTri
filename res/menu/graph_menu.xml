@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    
+        <item
+        android:id="@+id/menu_monthly"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/monthlydata_menu"/>
+    
+        <item
+        android:id="@+id/menu_yearly"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/yearlydata_menu"/>
+        
+            <item
+        android:id="@+id/menu_breakdown"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/activity_breakdown_menu"/>
+    
+
+</menu>

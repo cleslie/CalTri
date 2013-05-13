@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:padding="5dp" >
+
+    <Button
+        android:id="@+id/bRecord"
+        android:layout_width="125dp"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_record"
+        android:drawablePadding="5dp"
+        android:text="Record"
+        android:textSize="20dp" />
+
+    <Button
+        android:id="@+id/bArchive"
+        android:layout_width="125dp"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/bRecord"
+        android:drawableLeft="@drawable/ic_log"
+        android:drawablePadding="5dp"
+        android:text="Log"
+        android:textSize="20dp" />
+
+    <Button
+        android:id="@+id/bAbout"
+        android:layout_width="125dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/bRecord"
+        android:text="About"
+        android:textSize="20dp" />
+
+    <Button
+        android:id="@+id/bGraph"
+        android:layout_width="125dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/bArchive"
+        android:layout_toRightOf="@+id/bAbout"
+        android:drawableLeft="@drawable/ic_graph"
+        android:drawablePadding="5dp"
+        android:text="Graph"
+        android:textSize="20dp" />
+
+    <Button
+        android:id="@+id/bSync"
+        android:layout_width="125dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/bAbout"
+        android:text="Email"
+        android:textSize="20dp" />
+
+    <Button
+        android:id="@+id/bMap"
+        android:layout_width="125dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/bGraph"
+        android:layout_toRightOf="@+id/bSync"
+        android:text="Map"
+        android:textSize="20dp" />
+
+</RelativeLayout>
