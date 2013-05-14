@@ -9,9 +9,10 @@
         android:id="@+id/imgActivity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingRight="10dp" />
+         />
 
     <RelativeLayout
+        android:paddingLeft="15dp"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" >
 
@@ -47,6 +48,7 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/list_comments"
             android:layout_alignParentRight="true"
+            android:gravity="right"
             android:paddingTop="4dp"
             android:text="date"
             android:textSize="9sp" />
