@@ -23,6 +23,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -43,6 +44,8 @@ import java.util.regex.Pattern;
 public class Archive extends Activity {
 
 	private ListView lvContent;
+	private Button backButton;
+	private Button forwardButton;
 	private String idString;
 	private DBCalTri databaseHelper;
 	private final String[] columns = new String[] { DBCalTri.KEY_DATE,
@@ -55,6 +58,8 @@ public class Archive extends Activity {
 	private final SimpleDateFormat outputDateFormat = new SimpleDateFormat(
 			"dd-MM-yy");
 	private SimpleCursorAdapter logAdapter;
+	private String currentDisplayDate;
+	private int monthsDifference;
 
 	protected void onCreate(Bundle savedInstanceState) {
 		
@@ -64,15 +69,25 @@ public class Archive extends Activity {
 		
 		
 		
+		
 		super.onCreate(savedInstanceState);
 		// this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.archive_listview);
+		backButton = (Button) findViewById(R.id.bBackMonth);
+		forwardButton = (Button) findViewById(R.id.bForwardMonth);
 		lvContent = (ListView) findViewById(R.id.list);
 		
 		//current date
 		String currentMonthYear = new SimpleDateFormat("MMMM yyyy").format(new Date());
 		setTitle("Training from "+ currentMonthYear);
-
+		
+		SimpleDateFormat comparisonDateFormat = new SimpleDateFormat("MM-yyyy");
+		currentDisplayDate = currentMonthYear;
+		monthsDifference = 0;
+		
+		Log.e("String currentDisplayDate ", currentDisplayDate);
+		
+		
 		// displaying SQL data
 		databaseHelper = new DBCalTri(this);
 		databaseHelper.open();
@@ -125,6 +140,25 @@ public class Archive extends Activity {
 				startActivity(intentDetailed);
 			}
 		});
+		
+		backButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				monthsDifference++;
+				lvContent.setAdapter(changeMonth(monthsDifference));
+			}
+		});
+		
+		forwardButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				//not working
+				monthsDifference--;
+				changeMonth(monthsDifference);
+				lvContent.setAdapter(changeMonth(monthsDifference));
+			}
+		});
+		
 
 	}
 
@@ -194,12 +228,28 @@ public class Archive extends Activity {
 		// Attach all entries to adapter and output to listview
 		// Cursor c = databaseHelper.fetchAllEntriesBasic();
 		//Cursor c = databaseHelper.fetchEntriesCurrentWeek();
-		Cursor c = databaseHelper.fetchEntriesPastMonth();
-		startManagingCursor(c);
+		Cursor tempCursor = databaseHelper.fetchEntriesPastMonth();
+		startManagingCursor(tempCursor);
 		SimpleCursorAdapter entriesAdapter = new SimpleCursorAdapter(this,
-				R.layout.archive_items, c, columns, listItemTextViews);
-		stopManagingCursor(c);
+				R.layout.archive_items, tempCursor, columns, listItemTextViews);
+		stopManagingCursor(tempCursor);
 		return formatAdapter(entriesAdapter);
+	}
+	
+	public SimpleCursorAdapter changeMonth(int monthDifference){
+		//database call with month int
+		// month + or - one
+		databaseHelper.open();
+		Cursor tempCursor = databaseHelper.fetchEntriesDifferentMonth(monthDifference);
+		startManagingCursor(tempCursor);
+		SimpleCursorAdapter entriesAdapter = new SimpleCursorAdapter(this,
+				R.layout.archive_items, tempCursor, columns, listItemTextViews);
+		stopManagingCursor(tempCursor);
+		databaseHelper.close();
+		return formatAdapter(entriesAdapter);
+		//attach cursor to listview adapter and notfiydataset changed
+		//refresh view without restarting activity
+		
 	}
 
 	

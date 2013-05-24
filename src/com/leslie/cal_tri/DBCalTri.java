@@ -155,8 +155,23 @@ public class DBCalTri {
 						null);
 	}
 	
+	
 	public Cursor fetchEntriesPastMonth(){
 		return ourDatabase.rawQuery("SELECT * FROM trainingTable WHERE date BETWEEN date('now', 'start of month') AND date('now', 'localtime')", null);
+	}
+	
+	public Cursor fetchEntriesDifferentMonth(int monthDifference){
+		if (monthDifference==0){
+			//current month
+			return ourDatabase.rawQuery("SELECT * FROM trainingTable WHERE date BETWEEN date('now', 'start of month') AND date('now', 'localtime')", null);
+		} else if (monthDifference<0){
+			//change to -month based on monthDifference
+			return ourDatabase.rawQuery("SELECT * FROM trainingTable WHERE date BETWEEN date('now', '"+String.valueOf(monthDifference)+"month') AND date('now', 'start of month')", null);
+		} else if (monthDifference>1){
+			//change to + month based on monthDifference
+			ourDatabase.rawQuery("SELECT * FROM trainingTable WHERE date BETWEEN date('now', 'start of month') AND date('now', 'localtime')", null);
+		}
+		return null;	
 	}
 
 	public Cursor fetchEntry(long rowId) throws SQLException {

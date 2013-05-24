@@ -13,7 +13,29 @@
         android:id="@+id/empty_list"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="No sessions recorded "
-        android:padding="10dp" />
+        android:padding="10dp"
+        android:text="No sessions recorded " />
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <Button
+            android:id="@+id/bBackMonth"
+            android:layout_width="125dp"
+            android:layout_height="wrap_content"
+            android:drawablePadding="5dp"
+            android:text="Back"
+            android:textSize="20dp" />
+
+        <Button
+            android:id="@+id/bForwardMonth"
+            android:layout_toRightOf="@id/bBackMonth"
+            android:layout_width="125dp"
+            android:layout_height="wrap_content"
+            android:drawablePadding="5dp"
+            android:text="Forward"
+            android:textSize="20dp" />
+    </RelativeLayout>
 
 </LinearLayout>
