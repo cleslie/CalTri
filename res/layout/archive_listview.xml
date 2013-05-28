@@ -1,13 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/linearButtonsBox" >
+
+        <Button
+            android:id="@+id/bBackMonth"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawablePadding="5dp"
+            android:text="Back"
+            android:textSize="20dp" />
+
+        <Button
+            android:id="@+id/bForwardMonth"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawablePadding="5dp"
+            android:text="Forward"
+            android:textSize="20dp" />
+    </LinearLayout>
+
     <ListView
         android:id="@+id/list"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_above="@+id/linearButtonsBox"/>"
 
     <TextView
         android:id="@+id/empty_list"
@@ -16,26 +43,4 @@
         android:padding="10dp"
         android:text="No sessions recorded " />
 
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
-
-        <Button
-            android:id="@+id/bBackMonth"
-            android:layout_width="125dp"
-            android:layout_height="wrap_content"
-            android:drawablePadding="5dp"
-            android:text="Back"
-            android:textSize="20dp" />
-
-        <Button
-            android:id="@+id/bForwardMonth"
-            android:layout_toRightOf="@id/bBackMonth"
-            android:layout_width="125dp"
-            android:layout_height="wrap_content"
-            android:drawablePadding="5dp"
-            android:text="Forward"
-            android:textSize="20dp" />
-    </RelativeLayout>
-
-</LinearLayout>
+</RelativeLayout>

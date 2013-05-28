@@ -57,37 +57,37 @@ public class Archive extends Activity {
 			"yyyy-MM-dd");
 	private final SimpleDateFormat outputDateFormat = new SimpleDateFormat(
 			"dd-MM-yy");
+	private final SimpleDateFormat titleDateFormat = new SimpleDateFormat("MMMM yyyy");
 	private SimpleCursorAdapter logAdapter;
 	private String currentDisplayDate;
+	private String currentMonthYear;
 	private int monthsDifference;
 
 	protected void onCreate(Bundle savedInstanceState) {
 		
 		
 		//TODO:
-		// Move back/forward month buttons and queries
+		// 1) Transfer logic behind forward and back buttons to calendar/java
+		// instead of sqlite queries,  which are a bit buggy
+		// 2) Old sort by queries still attach all entries to adapter, need
+		// to change so that they only display current month as well.
 		
 		
 		
 		
 		super.onCreate(savedInstanceState);
-		// this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.archive_listview);
 		backButton = (Button) findViewById(R.id.bBackMonth);
 		forwardButton = (Button) findViewById(R.id.bForwardMonth);
 		lvContent = (ListView) findViewById(R.id.list);
 		
 		//current date
-		String currentMonthYear = new SimpleDateFormat("MMMM yyyy").format(new Date());
+		currentMonthYear = titleDateFormat.format(new Date());
 		setTitle("Training from "+ currentMonthYear);
 		
-		SimpleDateFormat comparisonDateFormat = new SimpleDateFormat("MM-yyyy");
-		currentDisplayDate = currentMonthYear;
+		//used in bugged implmenetation of month change
 		monthsDifference = 0;
-		
-		Log.e("String currentDisplayDate ", currentDisplayDate);
-		
-		
+			
 		// displaying SQL data
 		databaseHelper = new DBCalTri(this);
 		databaseHelper.open();
@@ -95,8 +95,6 @@ public class Archive extends Activity {
 		lvContent.setAdapter(logAdapter);
 		databaseHelper.close();
 		lvContent.setEmptyView(findViewById(R.id.empty_list));
-		//lvContent.setBackgroundResource(R.drawable.customshape);
-
 		lvContent.setLongClickable(true);
 		lvContent.setOnItemLongClickListener(new OnItemLongClickListener() {
 			@Override
@@ -144,18 +142,18 @@ public class Archive extends Activity {
 		backButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				monthsDifference++;
+				monthsDifference--;
 				lvContent.setAdapter(changeMonth(monthsDifference));
+				updateTitleDate(monthsDifference);
 			}
 		});
 		
 		forwardButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				//not working
-				monthsDifference--;
-				changeMonth(monthsDifference);
+				monthsDifference++;
 				lvContent.setAdapter(changeMonth(monthsDifference));
+				updateTitleDate(monthsDifference);
 			}
 		});
 		
@@ -245,14 +243,25 @@ public class Archive extends Activity {
 		SimpleCursorAdapter entriesAdapter = new SimpleCursorAdapter(this,
 				R.layout.archive_items, tempCursor, columns, listItemTextViews);
 		stopManagingCursor(tempCursor);
-		databaseHelper.close();
+		//databaseHelper.close();
 		return formatAdapter(entriesAdapter);
 		//attach cursor to listview adapter and notfiydataset changed
 		//refresh view without restarting activity
-		
 	}
-
 	
+	public void updateTitleDate(int monthDifference){
+		//updates title based on month the data being displayed is from
+		if (monthDifference==0){
+			setTitle("Training from "+ currentMonthYear);
+		} else {
+			Calendar cal = Calendar.getInstance(); 
+			cal.add(Calendar.MONTH, monthDifference);
+			currentDisplayDate = titleDateFormat.format(cal.getTime());
+			setTitle("Training from " + currentDisplayDate);
+		}	
+	}
+	
+
 	public void deleteEntry(final View tempView, String id) {
 		idString = id;
 		AlertDialog dialogDelete = new AlertDialog.Builder(Archive.this)
@@ -291,6 +300,7 @@ public class Archive extends Activity {
 	}
 
 	public void sortBy(int sortChoice) {
+		
 
 		Cursor c = null;
 		switch (sortChoice) {

@@ -154,24 +154,67 @@ public class DBCalTri {
 						"SELECT * FROM trainingTable WHERE date BETWEEN datetime('now', '-6 days') AND datetime('now', 'localtime')",
 						null);
 	}
-	
-	
-	public Cursor fetchEntriesPastMonth(){
-		return ourDatabase.rawQuery("SELECT * FROM trainingTable WHERE date BETWEEN date('now', 'start of month') AND date('now', 'localtime')", null);
+
+	public Cursor fetchEntriesPastMonth() {
+		return ourDatabase
+				.rawQuery(
+						"SELECT * FROM trainingTable WHERE date BETWEEN date('now', 'start of month') AND date('now', 'localtime')",
+						null);
 	}
-	
-	public Cursor fetchEntriesDifferentMonth(int monthDifference){
-		if (monthDifference==0){
-			//current month
-			return ourDatabase.rawQuery("SELECT * FROM trainingTable WHERE date BETWEEN date('now', 'start of month') AND date('now', 'localtime')", null);
-		} else if (monthDifference<0){
-			//change to -month based on monthDifference
-			return ourDatabase.rawQuery("SELECT * FROM trainingTable WHERE date BETWEEN date('now', '"+String.valueOf(monthDifference)+"month') AND date('now', 'start of month')", null);
-		} else if (monthDifference>1){
-			//change to + month based on monthDifference
-			ourDatabase.rawQuery("SELECT * FROM trainingTable WHERE date BETWEEN date('now', 'start of month') AND date('now', 'localtime')", null);
+
+	public Cursor fetchEntriesDifferentMonth(int monthDifference) {
+		String monthDiff = String.valueOf(monthDifference);
+		if (monthDifference == 0) {
+			// current month
+			return ourDatabase
+					.rawQuery(
+							"SELECT * FROM trainingTable WHERE date BETWEEN date('now', 'start of month') AND date('now', 'localtime') ORDER BY date DESC",
+							null);
+		} else if (monthDifference == -1) {
+			// no minus sign needed before monthDiff variables because it is
+			// automatically displayed for negative numbers
+			// change to previous month
+			return ourDatabase
+					.rawQuery(
+							"SELECT * FROM trainingTable WHERE date BETWEEN date('now', 'start of month', '"
+									+ monthDiff
+									+ " month') AND date('now', 'start of month', '-1 day', 'localtime')",
+							null);
+		} else if (monthDifference < -1) {
+
+			// partially working - bugged with entries at the beginning and end
+			// of
+			// month due to SQLite implementation of minus/plus months
+			// 'normalising'
+
+			// comparison month needed to get records between monthdiff and the
+			// month after (entries in past)
+			String monthDiffPlusOne = String.valueOf(monthDifference + 1);
+			return ourDatabase
+					.rawQuery(
+							"SELECT * FROM trainingTable WHERE date BETWEEN date('now', 'start of month', '"
+									+ monthDiff
+									+ " months') AND date('now', 'start of month', '"
+									+ monthDiffPlusOne
+									+ " month', 'localtime')", null);
+		} else if (monthDifference >= 1) {
+
+			// Plus sign needed before monthDiff variables here because it is
+			// not automatically displayed
+			// change to + month based on monthDifference
+			// select results from entries within start of next month and end of
+			// next month
+			
+			String monthDiffPlusOne = String.valueOf(monthDifference + 1);
+			return ourDatabase
+					.rawQuery(
+							"SELECT * FROM trainingTable WHERE date BETWEEN date('now', 'start of month', '+"
+									+ monthDiff
+									+ " month') AND date('now', 'start of month', '+"
+									+ monthDiffPlusOne + " months', '-1 day')",
+							null);
 		}
-		return null;	
+		return null;
 	}
 
 	public Cursor fetchEntry(long rowId) throws SQLException {
@@ -257,11 +300,7 @@ public class DBCalTri {
 		String[] arguments = { MonthYear };
 		Cursor c = ourDatabase.rawQuery(query, arguments);
 
-		int iRow = c.getColumnIndex(KEY_ROWID);
-		int iDate = c.getColumnIndex(KEY_DATE);
 		int iActivity = c.getColumnIndex(KEY_ACTIVITY);
-		int iDistance = c.getColumnIndex(KEY_DISTANCE);
-		int iComments = c.getColumnIndex(KEY_COMMENTS);
 
 		for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
 
@@ -284,57 +323,6 @@ public class DBCalTri {
 		entryArray.add(String.valueOf(numberOfRuns));
 
 		return entryArray;
-	}
-
-	public Array getYearlyData() {
-		// unused attempted implementation of linegraph
-
-		int[] swim = new int[12];
-		int[] cycle = new int[12];
-		int[] run = new int[12];
-
-		Cursor c = getYearlySwim();
-		int iActivity = c.getColumnIndex(KEY_ACTIVITY);
-
-		for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
-
-			String activityType = c.getString(iActivity);
-			Log.e("test activity run: ", activityType);
-
-		}
-
-		// for int=0,int<12, int ++
-		// get data from currentmonth - int
-		// if records < 1
-		// set activityarray[int] = 0
-		// else:
-		// set activityarray[int] = distance
-
-		// repeat for each activity
-
-		// add 3 arrays to new array
-		// return
-
-		return null;
-	}
-
-	public Cursor getYearlySwim() {
-		// unused
-		String query = "SELECT * FROM "
-				+ DATABASE_TABLE
-				+ " WHERE date > DATEADD(year,-1,GETDATE()) AND activity_type='Swim'";
-		return ourDatabase.rawQuery(query, null);
-
-	}
-
-	public Cursor getYearlyCycle() {
-		return null;
-
-	}
-
-	public Cursor getYearlyRun() {
-		return null;
-
 	}
 
 }
