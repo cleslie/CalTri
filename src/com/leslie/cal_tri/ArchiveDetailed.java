@@ -69,7 +69,7 @@ public class ArchiveDetailed extends Activity {
 		int seconds = secondsFromEntry % 60;
 		String hoursStr = String.valueOf(hours);
 		String minsStr = String.valueOf(minutes);
-		String secStr = String.valueOf(minutes);	
+		String secStr = String.valueOf(seconds);	
 		if(minsStr.length()==1){
 			minsStr = "0" + minsStr;
 		}

@@ -58,6 +58,7 @@ public class Archive extends Activity {
 	private final SimpleDateFormat outputDateFormat = new SimpleDateFormat(
 			"dd-MM-yy");
 	private final SimpleDateFormat titleDateFormat = new SimpleDateFormat("MMMM yyyy");
+	private final SimpleDateFormat databaseQueryFormat = new SimpleDateFormat("yyyy-MM");
 	private SimpleCursorAdapter logAdapter;
 	private String currentDisplayDate;
 	private String currentMonthYear;
@@ -91,7 +92,7 @@ public class Archive extends Activity {
 		// displaying SQL data
 		databaseHelper = new DBCalTri(this);
 		databaseHelper.open();
-		logAdapter = getEntriesAdapter();
+		logAdapter = getEntriesAdapterCurrentMonth();
 		lvContent.setAdapter(logAdapter);
 		databaseHelper.close();
 		lvContent.setEmptyView(findViewById(R.id.empty_list));
@@ -143,7 +144,7 @@ public class Archive extends Activity {
 			@Override
 			public void onClick(View v) {
 				monthsDifference--;
-				lvContent.setAdapter(changeMonth(monthsDifference));
+				lvContent.setAdapter(changeMonthImproved(monthsDifference));
 				updateTitleDate(monthsDifference);
 			}
 		});
@@ -152,7 +153,7 @@ public class Archive extends Activity {
 			@Override
 			public void onClick(View v) {
 				monthsDifference++;
-				lvContent.setAdapter(changeMonth(monthsDifference));
+				lvContent.setAdapter(changeMonthImproved(monthsDifference));
 				updateTitleDate(monthsDifference);
 			}
 		});
@@ -174,6 +175,13 @@ public class Archive extends Activity {
 
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
+		
+		case R.id.menu_view_all:
+			databaseHelper.open();
+			lvContent.setAdapter(getEntriesAdapterAll());
+			databaseHelper.close();
+			setTitle("Training from all time");
+			break;
 
 		case R.id.menu_sort:
 			// sort choices
@@ -222,11 +230,21 @@ public class Archive extends Activity {
 	}
 
 	//@SuppressWarnings("deprecation")
-	private SimpleCursorAdapter getEntriesAdapter() {
+	private SimpleCursorAdapter getEntriesAdapterCurrentMonth() {
+		// Attach all entries to adapter and output to listview
+		Cursor tempCursor = databaseHelper.fetchEntriesPastMonth();
+		startManagingCursor(tempCursor);
+		SimpleCursorAdapter entriesAdapter = new SimpleCursorAdapter(this,
+				R.layout.archive_items, tempCursor, columns, listItemTextViews);
+		stopManagingCursor(tempCursor);
+		return formatAdapter(entriesAdapter);
+	}
+	
+	private SimpleCursorAdapter getEntriesAdapterAll() {
 		// Attach all entries to adapter and output to listview
 		// Cursor c = databaseHelper.fetchAllEntriesBasic();
 		//Cursor c = databaseHelper.fetchEntriesCurrentWeek();
-		Cursor tempCursor = databaseHelper.fetchEntriesPastMonth();
+		Cursor tempCursor = databaseHelper.fetchAllEntriesBasic();
 		startManagingCursor(tempCursor);
 		SimpleCursorAdapter entriesAdapter = new SimpleCursorAdapter(this,
 				R.layout.archive_items, tempCursor, columns, listItemTextViews);
@@ -247,6 +265,21 @@ public class Archive extends Activity {
 		return formatAdapter(entriesAdapter);
 		//attach cursor to listview adapter and notfiydataset changed
 		//refresh view without restarting activity
+	}
+	
+	public SimpleCursorAdapter changeMonthImproved(int monthDifference){
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.MONTH, monthDifference);
+		String currentEntriesDate = databaseQueryFormat.format(cal.getTime());
+		
+		databaseHelper.open();
+		Cursor tempCursor = databaseHelper.fetchEntriesSpecificMonth(currentEntriesDate);
+		SimpleCursorAdapter entriesAdapter = new SimpleCursorAdapter(this,
+				R.layout.archive_items, tempCursor, columns, listItemTextViews);
+		stopManagingCursor(tempCursor);
+		
+		
+		return formatAdapter(entriesAdapter);
 	}
 	
 	public void updateTitleDate(int monthDifference){
@@ -358,13 +391,13 @@ public class Archive extends Activity {
 				if (column == 2 && viewId == R.id.imgActivity){
 					if (cursor.getString(column).equals("Swim")){
 						ImageView displayImage = (ImageView) view;
-						displayImage.setBackgroundResource(R.drawable.blue_swim);
+						displayImage.setBackgroundResource(R.drawable.icon_swim);
 					} else if(cursor.getString(column).equals("Cycle")){
 						ImageView displayImage = (ImageView) view;
-						displayImage.setBackgroundResource(R.drawable.green_cycle);
+						displayImage.setBackgroundResource(R.drawable.icon_cycle);
 					} else if(cursor.getString(column).equals("Run")){
 						ImageView displayImage = (ImageView) view;
-						displayImage.setBackgroundResource(R.drawable.orange_run);
+						displayImage.setBackgroundResource(R.drawable.icon_run);
 					}
 				}
 

@@ -178,7 +178,7 @@ public class DBCalTri {
 					.rawQuery(
 							"SELECT * FROM trainingTable WHERE date BETWEEN date('now', 'start of month', '"
 									+ monthDiff
-									+ " month') AND date('now', 'start of month', '-1 day', 'localtime')",
+									+ " month') AND date('now', 'start of month', '-1 day', 'localtime') ORDER BY date DESC",
 							null);
 		} else if (monthDifference < -1) {
 
@@ -211,12 +211,22 @@ public class DBCalTri {
 							"SELECT * FROM trainingTable WHERE date BETWEEN date('now', 'start of month', '+"
 									+ monthDiff
 									+ " month') AND date('now', 'start of month', '+"
-									+ monthDiffPlusOne + " months', '-1 day')",
+									+ monthDiffPlusOne + " months', '-1 day') ORDER BY date DESC",
 							null);
 		}
 		return null;
 	}
 
+	
+	public Cursor fetchEntriesSpecificMonth(String monthYear) {
+		
+		String query = "SELECT * FROM " + DATABASE_TABLE
+				+ " WHERE strftime('%Y-%m', `date`) =?";
+		String[] arguments = { monthYear };
+		Cursor c = ourDatabase.rawQuery(query, arguments);
+		return c;
+	}
+	
 	public Cursor fetchEntry(long rowId) throws SQLException {
 		// Return a Cursor positioned at the note that matches the given rowId
 		Cursor mCursor = ourDatabase.query(true, DATABASE_TABLE, new String[] {

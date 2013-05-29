@@ -292,14 +292,14 @@ containing a value of this type.
         public static final int link_text_holo_light=0x7f07009d;
     }
     public static final class drawable {
-        public static final int blue_swim=0x7f020000;
-        public static final int green_cycle=0x7f020001;
-        public static final int ic_circle=0x7f020002;
-        public static final int ic_graph=0x7f020003;
-        public static final int ic_launcher=0x7f020004;
-        public static final int ic_log=0x7f020005;
-        public static final int ic_record=0x7f020006;
-        public static final int orange_run=0x7f020007;
+        public static final int ic_circle=0x7f020000;
+        public static final int ic_graph=0x7f020001;
+        public static final int ic_launcher=0x7f020002;
+        public static final int ic_log=0x7f020003;
+        public static final int ic_record=0x7f020004;
+        public static final int icon_cycle=0x7f020005;
+        public static final int icon_run=0x7f020006;
+        public static final int icon_swim=0x7f020007;
     }
     public static final class id {
         public static final int bAbout=0x7f040021;
@@ -331,12 +331,13 @@ containing a value of this type.
         public static final int list_distance=0x7f04000f;
         public static final int mainChart=0x7f04001e;
         public static final int map=0x7f040025;
-        public static final int menu_breakdown=0x7f040039;
-        public static final int menu_delete=0x7f040036;
-        public static final int menu_monthly=0x7f040037;
+        public static final int menu_breakdown=0x7f04003a;
+        public static final int menu_delete=0x7f040037;
+        public static final int menu_monthly=0x7f040038;
         public static final int menu_settings=0x7f040034;
-        public static final int menu_sort=0x7f040035;
-        public static final int menu_yearly=0x7f040038;
+        public static final int menu_sort=0x7f040036;
+        public static final int menu_view_all=0x7f040035;
+        public static final int menu_yearly=0x7f040039;
         public static final int miles=0x7f040010;
         public static final int none=0x7f040000;
         public static final int normal=0x7f040001;
@@ -378,7 +379,7 @@ containing a value of this type.
         public static final int graph_menu=0x7f090002;
     }
     public static final class string {
-        public static final int activity_breakdown_menu=0x7f05001b;
+        public static final int activity_breakdown_menu=0x7f05001c;
         public static final int app_name=0x7f050011;
         /**   Title for notification shown when GooglePlayServices is unavailable [CHAR LIMIT=70] 
          */
@@ -389,7 +390,7 @@ containing a value of this type.
         /**   Requested by string saying which app requested the notification. [CHAR LIMIT=42] 
          */
         public static final int auth_client_requested_by_msg=0x7f050010;
-        public static final int comments_hint=0x7f050016;
+        public static final int comments_hint=0x7f050017;
         /**  Button in confirmation dialog to enable Google Play services.  Clicking it
         will direct user to application settings of Google Play services where they
         can enable it [CHAR LIMIT=40] 
@@ -443,14 +444,15 @@ containing a value of this type.
         find the service-side assets. [CHAR LIMIT=25] 
          */
         public static final int common_signin_button_text_long=0x7f05000d;
-        public static final int date_hint=0x7f050017;
-        public static final int db_name=0x7f050018;
+        public static final int date_hint=0x7f050018;
+        public static final int db_name=0x7f050019;
         public static final int hello_world=0x7f050012;
-        public static final int menu_delete=0x7f050015;
+        public static final int menu_delete=0x7f050016;
         public static final int menu_settings=0x7f050013;
-        public static final int menu_sort=0x7f050014;
-        public static final int monthlydata_menu=0x7f05001a;
-        public static final int yearlydata_menu=0x7f050019;
+        public static final int menu_sort=0x7f050015;
+        public static final int menu_viewAll=0x7f050014;
+        public static final int monthlydata_menu=0x7f05001b;
+        public static final int yearlydata_menu=0x7f05001a;
     }
     public static final class style {
         /** 
