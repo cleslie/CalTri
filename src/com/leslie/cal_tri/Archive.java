@@ -24,6 +24,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -44,8 +45,8 @@ import java.util.regex.Pattern;
 public class Archive extends Activity {
 
 	private ListView lvContent;
-	private Button backButton;
-	private Button forwardButton;
+	private ImageButton backButton;
+	private ImageButton forwardButton;
 	private String idString;
 	private DBCalTri databaseHelper;
 	private final String[] columns = new String[] { DBCalTri.KEY_DATE,
@@ -68,9 +69,7 @@ public class Archive extends Activity {
 		
 		
 		//TODO:
-		// 1) Transfer logic behind forward and back buttons to calendar/java
-		// instead of sqlite queries,  which are a bit buggy
-		// 2) Old sort by queries still attach all entries to adapter, need
+		// 1) Old sort by queries still attach all entries to adapter, need
 		// to change so that they only display current month as well.
 		
 		
@@ -78,13 +77,13 @@ public class Archive extends Activity {
 		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.archive_listview);
-		backButton = (Button) findViewById(R.id.bBackMonth);
-		forwardButton = (Button) findViewById(R.id.bForwardMonth);
+		backButton = (ImageButton) findViewById(R.id.bBackMonth);
+		forwardButton = (ImageButton) findViewById(R.id.bForwardMonth);
 		lvContent = (ListView) findViewById(R.id.list);
 		
 		//current date
 		currentMonthYear = titleDateFormat.format(new Date());
-		setTitle("Training from "+ currentMonthYear);
+		setTitle(currentMonthYear);
 		
 		//used in bugged implmenetation of month change
 		monthsDifference = 0;
@@ -252,21 +251,6 @@ public class Archive extends Activity {
 		return formatAdapter(entriesAdapter);
 	}
 	
-	public SimpleCursorAdapter changeMonth(int monthDifference){
-		//database call with month int
-		// month + or - one
-		databaseHelper.open();
-		Cursor tempCursor = databaseHelper.fetchEntriesDifferentMonth(monthDifference);
-		startManagingCursor(tempCursor);
-		SimpleCursorAdapter entriesAdapter = new SimpleCursorAdapter(this,
-				R.layout.archive_items, tempCursor, columns, listItemTextViews);
-		stopManagingCursor(tempCursor);
-		//databaseHelper.close();
-		return formatAdapter(entriesAdapter);
-		//attach cursor to listview adapter and notfiydataset changed
-		//refresh view without restarting activity
-	}
-	
 	public SimpleCursorAdapter changeMonthImproved(int monthDifference){
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.MONTH, monthDifference);
@@ -285,12 +269,12 @@ public class Archive extends Activity {
 	public void updateTitleDate(int monthDifference){
 		//updates title based on month the data being displayed is from
 		if (monthDifference==0){
-			setTitle("Training from "+ currentMonthYear);
+			setTitle(currentMonthYear);
 		} else {
 			Calendar cal = Calendar.getInstance(); 
 			cal.add(Calendar.MONTH, monthDifference);
 			currentDisplayDate = titleDateFormat.format(cal.getTime());
-			setTitle("Training from " + currentDisplayDate);
+			setTitle(currentDisplayDate);
 		}	
 	}
 	

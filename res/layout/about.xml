@@ -18,7 +18,9 @@
         android:gravity="center"
         android:paddingBottom="100dp"
         android:paddingTop="150dp"
-        android:text="Created by Calum Leslie 2013 Copyright"
+        android:text="Created by Calum Leslie 2013 Copyright
+        
+        Icons - http://icondock.com/"
         android:textSize="18sp" />
 
 </LinearLayout>

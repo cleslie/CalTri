@@ -14,15 +14,6 @@
         android:textSize="20dp" />
 
     <Button
-        android:id="@+id/btnDrive"
-        android:layout_width="125dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:drawablePadding="5dp"
-        android:text="Send to Drive"
-        android:textSize="20dp" />
-
-    <Button
         android:id="@+id/btnSaveCSV"
         android:layout_width="125dp"
         android:layout_height="wrap_content"

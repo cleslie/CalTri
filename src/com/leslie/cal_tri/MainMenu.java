@@ -6,28 +6,29 @@ import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 
 public class MainMenu extends Activity {
 
-	private Button btnRecord;
-	private Button btnArchive;
-	private Button btnAbout;
-	private Button btnGraph;
-	private Button btnSync;
-	private Button btnMap;
+	private ImageButton btnRecord;
+	private ImageButton btnArchive;
+	private ImageButton btnAbout;
+	private ImageButton btnGraph;
+	private ImageButton btnSync;
+	private ImageButton btnMap;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main_menu);
 
-		btnRecord = (Button) findViewById(R.id.bRecord);
-		btnArchive = (Button) findViewById(R.id.bArchive);
-		btnAbout = (Button) findViewById(R.id.bAbout);
-		btnGraph = (Button) findViewById(R.id.bGraph);
-		btnSync = (Button) findViewById(R.id.bSync);
-		btnMap = (Button) findViewById(R.id.bMap);
+		btnRecord = (ImageButton) findViewById(R.id.bRecord);
+		btnArchive = (ImageButton) findViewById(R.id.bArchive);
+		btnAbout = (ImageButton) findViewById(R.id.bAbout);
+		btnGraph = (ImageButton) findViewById(R.id.bGraph);
+		btnSync = (ImageButton) findViewById(R.id.bSync);
+		btnMap = (ImageButton) findViewById(R.id.bMap);
 
 		btnRecord.setOnClickListener(new View.OnClickListener() {
 			@Override

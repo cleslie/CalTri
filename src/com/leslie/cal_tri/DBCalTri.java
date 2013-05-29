@@ -162,64 +162,9 @@ public class DBCalTri {
 						null);
 	}
 
-	public Cursor fetchEntriesDifferentMonth(int monthDifference) {
-		String monthDiff = String.valueOf(monthDifference);
-		if (monthDifference == 0) {
-			// current month
-			return ourDatabase
-					.rawQuery(
-							"SELECT * FROM trainingTable WHERE date BETWEEN date('now', 'start of month') AND date('now', 'localtime') ORDER BY date DESC",
-							null);
-		} else if (monthDifference == -1) {
-			// no minus sign needed before monthDiff variables because it is
-			// automatically displayed for negative numbers
-			// change to previous month
-			return ourDatabase
-					.rawQuery(
-							"SELECT * FROM trainingTable WHERE date BETWEEN date('now', 'start of month', '"
-									+ monthDiff
-									+ " month') AND date('now', 'start of month', '-1 day', 'localtime') ORDER BY date DESC",
-							null);
-		} else if (monthDifference < -1) {
-
-			// partially working - bugged with entries at the beginning and end
-			// of
-			// month due to SQLite implementation of minus/plus months
-			// 'normalising'
-
-			// comparison month needed to get records between monthdiff and the
-			// month after (entries in past)
-			String monthDiffPlusOne = String.valueOf(monthDifference + 1);
-			return ourDatabase
-					.rawQuery(
-							"SELECT * FROM trainingTable WHERE date BETWEEN date('now', 'start of month', '"
-									+ monthDiff
-									+ " months') AND date('now', 'start of month', '"
-									+ monthDiffPlusOne
-									+ " month', 'localtime')", null);
-		} else if (monthDifference >= 1) {
-
-			// Plus sign needed before monthDiff variables here because it is
-			// not automatically displayed
-			// change to + month based on monthDifference
-			// select results from entries within start of next month and end of
-			// next month
-			
-			String monthDiffPlusOne = String.valueOf(monthDifference + 1);
-			return ourDatabase
-					.rawQuery(
-							"SELECT * FROM trainingTable WHERE date BETWEEN date('now', 'start of month', '+"
-									+ monthDiff
-									+ " month') AND date('now', 'start of month', '+"
-									+ monthDiffPlusOne + " months', '-1 day') ORDER BY date DESC",
-							null);
-		}
-		return null;
-	}
 
 	
-	public Cursor fetchEntriesSpecificMonth(String monthYear) {
-		
+	public Cursor fetchEntriesSpecificMonth(String monthYear) {	
 		String query = "SELECT * FROM " + DATABASE_TABLE
 				+ " WHERE strftime('%Y-%m', `date`) =?";
 		String[] arguments = { monthYear };

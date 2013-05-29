@@ -51,7 +51,7 @@ public class EmailArchive extends Activity {
 		
 		setContentView(R.layout.email_archive);
 		sendToEmail = (Button) findViewById(R.id.btnEmail);
-		sendToDrive = (Button) findViewById(R.id.btnDrive);
+		//sendToDrive = (Button) findViewById(R.id.btnDrive);
 		saveDataToCSV = (Button) findViewById(R.id.btnSaveCSV);
 		deleteSavedData = (Button) findViewById(R.id.btnDeleteCSV);
 		
