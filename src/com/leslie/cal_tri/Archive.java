@@ -70,9 +70,7 @@ public class Archive extends Activity {
 		
 		//TODO:
 		// 1) Old sort by queries still attach all entries to adapter, need
-		// to change so that they only display current month as well.
-		
-		
+		// to change so that they only display current month as well.	
 		
 		
 		super.onCreate(savedInstanceState);
@@ -84,14 +82,12 @@ public class Archive extends Activity {
 		//current date
 		currentMonthYear = titleDateFormat.format(new Date());
 		setTitle(currentMonthYear);
-		
-		//used in bugged implmenetation of month change
 		monthsDifference = 0;
 			
 		// displaying SQL data
 		databaseHelper = new DBCalTri(this);
 		databaseHelper.open();
-		logAdapter = getEntriesAdapterCurrentMonth();
+		logAdapter = getMonthlyData(monthsDifference);
 		lvContent.setAdapter(logAdapter);
 		databaseHelper.close();
 		lvContent.setEmptyView(findViewById(R.id.empty_list));
@@ -143,7 +139,7 @@ public class Archive extends Activity {
 			@Override
 			public void onClick(View v) {
 				monthsDifference--;
-				lvContent.setAdapter(changeMonthImproved(monthsDifference));
+				lvContent.setAdapter(getMonthlyData(monthsDifference));
 				updateTitleDate(monthsDifference);
 			}
 		});
@@ -152,7 +148,7 @@ public class Archive extends Activity {
 			@Override
 			public void onClick(View v) {
 				monthsDifference++;
-				lvContent.setAdapter(changeMonthImproved(monthsDifference));
+				lvContent.setAdapter(getMonthlyData(monthsDifference));
 				updateTitleDate(monthsDifference);
 			}
 		});
@@ -229,6 +225,7 @@ public class Archive extends Activity {
 	}
 
 	//@SuppressWarnings("deprecation")
+	//UNUSED
 	private SimpleCursorAdapter getEntriesAdapterCurrentMonth() {
 		// Attach all entries to adapter and output to listview
 		Cursor tempCursor = databaseHelper.fetchEntriesPastMonth();
@@ -238,7 +235,7 @@ public class Archive extends Activity {
 		stopManagingCursor(tempCursor);
 		return formatAdapter(entriesAdapter);
 	}
-	
+	//UNUSED
 	private SimpleCursorAdapter getEntriesAdapterAll() {
 		// Attach all entries to adapter and output to listview
 		// Cursor c = databaseHelper.fetchAllEntriesBasic();
@@ -251,7 +248,7 @@ public class Archive extends Activity {
 		return formatAdapter(entriesAdapter);
 	}
 	
-	public SimpleCursorAdapter changeMonthImproved(int monthDifference){
+	public SimpleCursorAdapter getMonthlyData(int monthDifference){
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.MONTH, monthDifference);
 		String currentEntriesDate = databaseQueryFormat.format(cal.getTime());
@@ -316,9 +313,7 @@ public class Archive extends Activity {
 
 	}
 
-	public void sortBy(int sortChoice) {
-		
-
+	public void sortBy(int sortChoice) {	
 		Cursor c = null;
 		switch (sortChoice) {
 		case 0:
@@ -382,6 +377,14 @@ public class Archive extends Activity {
 					} else if(cursor.getString(column).equals("Run")){
 						ImageView displayImage = (ImageView) view;
 						displayImage.setBackgroundResource(R.drawable.icon_run);
+					}
+				}
+				
+				//BUGGY - this view is not included in adapter, that's why it's failing
+				if (column == 2 && viewId == R.id.archive_distance_type){
+					if (cursor.getString(column).equals("Swim")){
+						TextView distanceType = (TextView) view;
+						distanceType.setText("m");
 					}
 				}
 

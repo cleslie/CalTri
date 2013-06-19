@@ -17,6 +17,7 @@ public class ArchiveDetailed extends Activity {
 	private TextView name;
 	private TextView activityType;
 	private TextView distance;
+	private TextView distanceType;
 	private TextView time;
 	private TextView notes;
 	private TextView intensity;
@@ -37,6 +38,7 @@ public class ArchiveDetailed extends Activity {
 		name = (TextView) findViewById(R.id.single_name);
 		activityType = (TextView) findViewById(R.id.single_activity);
 		distance = (TextView) findViewById(R.id.single_distance);
+		distanceType = (TextView) findViewById(R.id.single_miles);
 		time = (TextView) findViewById(R.id.single_time);
 		notes = (TextView) findViewById(R.id.single_notes);
 		intensity = (TextView) findViewById(R.id.single_intensity);
@@ -87,6 +89,13 @@ public class ArchiveDetailed extends Activity {
 		intensity.setText("Intensity " + entry.getString(entry.getColumnIndex("intensity")));
 		notes.setText(entry.getString(entry.getColumnIndex("notes")));
 		
+		if (activityType.getText().equals("Swim")){
+			distanceType.setText(" m in ");
+		}
+		
+		if (notes.getText().equals("")){
+			notes.setText("No session notes.");
+		}
 		
 	}
 

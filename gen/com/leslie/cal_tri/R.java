@@ -306,6 +306,7 @@ containing a value of this type.
         public static final int search=0x7f02000b;
     }
     public static final class id {
+        public static final int archive_distance_type=0x7f040010;
         public static final int bAbout=0x7f040020;
         public static final int bArchive=0x7f04001f;
         public static final int bBackMonth=0x7f040013;
@@ -341,7 +342,6 @@ containing a value of this type.
         public static final int menu_sort=0x7f040035;
         public static final int menu_view_all=0x7f040034;
         public static final int menu_yearly=0x7f040038;
-        public static final int miles=0x7f040010;
         public static final int none=0x7f040000;
         public static final int normal=0x7f040001;
         public static final int pickerDate=0x7f040025;
