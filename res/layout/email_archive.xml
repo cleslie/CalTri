@@ -10,25 +10,41 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:drawablePadding="5dp"
-        android:text="Send to Email"
+        android:text="Send via Email"
         android:textSize="20dp" />
 
-    <Button
-        android:id="@+id/btnSaveCSV"
-        android:layout_width="125dp"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:drawablePadding="5dp"
-        android:text="Save Data to SD Card"
-        android:textSize="20dp" />
+         android:gravity="center_horizontal" >
 
-    <Button
-        android:id="@+id/btnDeleteCSV"
-        android:layout_width="125dp"
+        <Button
+            android:id="@+id/btnSaveCSV"
+            android:layout_width="125dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:drawablePadding="5dp"
+            android:text="Save"
+            android:textSize="20dp" />
+
+        <Button
+            android:id="@+id/btnDeleteCSV"
+            android:layout_width="125dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:drawablePadding="5dp"
+            android:text="Delete"
+            android:textSize="20dp"
+            android:layout_toRightOf="@+id/btnSaveCSV" />
+            
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tvTrainingFileExists"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:drawablePadding="5dp"
-        android:text="Delete Saved Data"
-        android:textSize="20dp" />
+        android:text="File not checked"
+        android:textColor="@color/Orange" />
 
 </LinearLayout>

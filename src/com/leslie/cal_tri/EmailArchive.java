@@ -10,12 +10,14 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -33,6 +35,7 @@ public class EmailArchive extends Activity {
 	private Button sendToDrive;
 	private Button saveDataToCSV;
 	private Button deleteSavedData;
+	private TextView fileExistsNotification;
 	private DBCalTri databaseHelper;
 	private List<String[]> currentData;
 	public final String ADDRESS_FILE = (Environment
@@ -54,10 +57,12 @@ public class EmailArchive extends Activity {
 		//sendToDrive = (Button) findViewById(R.id.btnDrive);
 		saveDataToCSV = (Button) findViewById(R.id.btnSaveCSV);
 		deleteSavedData = (Button) findViewById(R.id.btnDeleteCSV);
+		fileExistsNotification = (TextView) findViewById(R.id.tvTrainingFileExists);
 		
 		//NEED HARD CHECK FOR SD
 		isSDMountedToast(isSDPresent);
 		writeTrainingToSDCard();
+		doesFileExist();
 		
 		sendToEmail.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -87,6 +92,7 @@ public class EmailArchive extends Activity {
 				//NEED HARD CHECK FOR SD
 				isSDMountedToast(isSDPresent);
 				writeTrainingToSDCard();
+				doesFileExist();
 			}
 		});
 		
@@ -95,6 +101,7 @@ public class EmailArchive extends Activity {
 				if (deleteFileFromSD()){
 					Toast deleteSuccessMessage = Toast.makeText(getApplicationContext(), "Saved data successfully deleted.", Toast.LENGTH_LONG);
 					deleteSuccessMessage.show();
+					doesFileExist();
 				}
 				
 			}
@@ -163,6 +170,18 @@ public class EmailArchive extends Activity {
 			//no SD card - needs handled better, ie. restart activity
 			Toast noSDNotification = Toast.makeText(getApplicationContext(), "No SD card found. Attempting to email or save log may cause application to crash.", Toast.LENGTH_LONG);
 			noSDNotification.show();
+		}
+	}
+	
+	public void doesFileExist(){
+		File trainingCSV = new File(ADDRESS_FILE);
+		if (trainingCSV.exists()){
+			Date lastMod = new Date(trainingCSV.lastModified());
+			fileExistsNotification.setText("Training File Found. Last modified: " + lastMod.toString());
+			fileExistsNotification.setTextColor(Color.parseColor("#66CD00"));
+		} else {
+			fileExistsNotification.setText("File not found.");
+			fileExistsNotification.setTextColor(Color.RED);
 		}
 	}
 

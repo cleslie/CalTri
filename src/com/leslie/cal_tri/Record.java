@@ -51,10 +51,8 @@ public class Record extends Activity {
 		setContentView(R.layout.record);
 
 		datePicker = (DatePicker) findViewById(R.id.pickerDate);
-		tvName = (TextView) findViewById(R.id.tvName);
 		name = (EditText) findViewById(R.id.etName);
 		activityType = (Spinner) findViewById(R.id.spiActivities);
-		tvDistance = (TextView) findViewById(R.id.tvDistance);
 		distance = (EditText) findViewById(R.id.etDistance);
 		hours = (EditText) findViewById(R.id.etHours);
 		mins = (EditText) findViewById(R.id.etMins);

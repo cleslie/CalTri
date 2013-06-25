@@ -381,7 +381,7 @@ public class Archive extends Activity {
 				}
 				
 				//BUGGY - this view is not included in adapter, that's why it's failing
-				if (column == 2 && viewId == R.id.archive_distance_type){
+				if (column == 2 && view.getId() == R.id.archive_distance_type){
 					if (cursor.getString(column).equals("Swim")){
 						TextView distanceType = (TextView) view;
 						distanceType.setText("m");

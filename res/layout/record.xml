@@ -20,66 +20,33 @@
                 android:layout_height="wrap_content"
                 android:calendarViewShown="false" />
 
-            <TextView
-                android:id="@+id/tvName"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="left"
-                android:paddingTop="10dp"
-                android:text="Name"
-                android:textSize="16sp" />
-
             <EditText
                 android:id="@+id/etName"
+                android:hint="Name"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text|textMultiLine"
-                android:maxLines="1" />
-
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="left"
-                android:paddingTop="10dp"
-                android:text="Activity Type"
-                android:textSize="16sp" />
+                android:maxLines="1"
+                android:layout_marginTop="10dp" />
 
             <Spinner
                 android:id="@+id/spiActivities"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:id="@+id/tvDistance"
-                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="left"
-                android:paddingTop="10dp"
-                android:text="Distance (miles)"
-                android:textSize="16sp" />
+                android:layout_marginTop="10dp"/>
 
             <EditText
                 android:id="@+id/etDistance"
+                android:hint="Distance"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:inputType="numberDecimal" />
-
-            <TextView
-                android:id="@+id/tvTime"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="left"
-                android:paddingTop="10dp"
-                android:text="Time H:M:S"
-                android:textSize="16sp" />
+                android:inputType="numberDecimal"
+                android:layout_marginTop="10dp" />
 
             <RelativeLayout
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp" >
 
                 <EditText
                     android:id="@+id/etHours"
@@ -87,7 +54,8 @@
                     android:layout_height="wrap_content"
                     android:ems="2"
                     android:inputType="number"
-                    android:maxLength="2" />
+                    android:maxLength="2"
+                    android:hint="H" />
 
                 <EditText
                     android:id="@+id/etMins"
@@ -96,7 +64,8 @@
                     android:layout_toRightOf="@id/etHours"
                     android:ems="2"
                     android:inputType="number"
-                    android:maxLength="2" />
+                    android:maxLength="2"
+                    android:hint="M"  />
 
                 <EditText
                     android:id="@+id/etSecs"
@@ -105,32 +74,25 @@
                     android:layout_toRightOf="@id/etMins"
                     android:ems="2"
                     android:inputType="number"
-                    android:maxLength="2" />
+                    android:maxLength="2"
+                    android:hint="S"  />
             </RelativeLayout>
-
-            <TextView
-                android:id="@+id/tvNotes"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="left"
-                android:paddingTop="10dp"
-                android:text="Notes"
-                android:textSize="16sp" />
 
             <EditText
                 android:id="@+id/etNotes"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text|textMultiLine"
-                android:maxLines="4" />
+                android:maxLines="4"
+                android:hint="Comments"
+                android:layout_marginTop="10dp" />
 
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="left"
-                android:paddingTop="10dp"
+                android:layout_marginTop="10dp"
                 android:text="Intensity"
                 android:textSize="16sp" />
 
