@@ -28,11 +28,7 @@ public class ArchiveDetailed extends Activity {
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		// this.requestWindowFeature(Window.FEATURE_NO_TITLE); //gets rid of top
-		// title bar (must be called before adding ANY content)
-		setContentView(R.layout.archive_detailed);
-		
-			
+		setContentView(R.layout.archive_detailed);			
 
 		date = (TextView) findViewById(R.id.single_date);
 		name = (TextView) findViewById(R.id.single_name);
@@ -50,10 +46,10 @@ public class ArchiveDetailed extends Activity {
 		databaseHelper.open();
 		Cursor entry = databaseHelper.fetchEntry(Long.valueOf(id));
 		
-		
 		dateFromEntry = entry.getString(entry.getColumnIndex("date"));
 		SimpleDateFormat formatReceived = new SimpleDateFormat("yyyy-MM-dd");
 		SimpleDateFormat titleFormat = new SimpleDateFormat("EEEE dd MMMM yyyy");
+		
 		try {
 			String reformattedDate = titleFormat.format(formatReceived
 					.parse(dateFromEntry));
@@ -66,21 +62,7 @@ public class ArchiveDetailed extends Activity {
 		//conversion and formatting of total seconds from database
 		//to hours:minutes:seconds
 		secondsFromEntry = Integer.parseInt(entry.getString(entry.getColumnIndex("time")));	
-		int hours = secondsFromEntry / 3600;
-		int minutes = (secondsFromEntry % 3600) / 60;
-		int seconds = secondsFromEntry % 60;
-		String hoursStr = String.valueOf(hours);
-		String minsStr = String.valueOf(minutes);
-		String secStr = String.valueOf(seconds);	
-		if(minsStr.length()==1){
-			minsStr = "0" + minsStr;
-		}
-		if (secStr.length()==1){
-			secStr = "0" + secStr;
-		}
-		String timeString = hoursStr + ":" + minsStr + ":" + secStr;
-
-		
+		String timeString = getTime(secondsFromEntry);
 		
 		name.setText(entry.getString(entry.getColumnIndex("comments")));
 		activityType.setText(entry.getString(entry.getColumnIndex("activity_type")));
@@ -106,6 +88,22 @@ public class ArchiveDetailed extends Activity {
 		// No menu
 		// getMenuInflater().inflate(R.menu.activity_main, menu);
 		return true;
+	}
+	
+	private String getTime(int totalSeconds){
+		int hours = secondsFromEntry / 3600;
+		int minutes = (secondsFromEntry % 3600) / 60;
+		int seconds = secondsFromEntry % 60;
+		String hoursStr = String.valueOf(hours);
+		String minsStr = String.valueOf(minutes);
+		String secStr = String.valueOf(seconds);	
+		if(minsStr.length()==1){
+			minsStr = "0" + minsStr;
+		}
+		if (secStr.length()==1){
+			secStr = "0" + secStr;
+		}
+		return hoursStr + ":" + minsStr + ":" + secStr;
 	}
 
 }

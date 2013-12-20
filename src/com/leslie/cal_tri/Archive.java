@@ -44,26 +44,35 @@ import java.util.regex.Pattern;
 
 public class Archive extends Activity {
 
+	//List View
 	private ListView lvContent;
-	private ImageButton backButton;
-	private ImageButton forwardButton;
-	private String idString;
-	private DBCalTri databaseHelper;
-	private final String[] columns = new String[] { DBCalTri.KEY_DATE,
-			DBCalTri.KEY_ACTIVITY, String.valueOf(DBCalTri.KEY_DISTANCE),
-			DBCalTri.KEY_COMMENTS };
 	private final int[] listItemTextViews = new int[] { R.id.list_date,
 			R.id.imgActivity, R.id.list_distance, R.id.list_comments };
+	private SimpleCursorAdapter logAdapter;
+	
+	//Buttons
+	private ImageButton backButton;
+	private ImageButton forwardButton;
+	
+	//Id to delete entries
+	private String idString;
+	
+	//Date formats and current date
 	private final SimpleDateFormat databaseDateFormat = new SimpleDateFormat(
 			"yyyy-MM-dd");
 	private final SimpleDateFormat outputDateFormat = new SimpleDateFormat(
 			"dd-MM-yy");
 	private final SimpleDateFormat titleDateFormat = new SimpleDateFormat("MMMM yyyy");
 	private final SimpleDateFormat databaseQueryFormat = new SimpleDateFormat("yyyy-MM");
-	private SimpleCursorAdapter logAdapter;
 	private String currentDisplayDate;
 	private String currentMonthYear;
 	private int monthsDifference;
+	
+	//Database
+	private DBCalTri databaseHelper;
+	private final String[] columns = new String[] { DBCalTri.KEY_DATE,
+			DBCalTri.KEY_ACTIVITY, String.valueOf(DBCalTri.KEY_DISTANCE),
+			DBCalTri.KEY_COMMENTS };
 
 	protected void onCreate(Bundle savedInstanceState) {
 		
@@ -84,12 +93,14 @@ public class Archive extends Activity {
 		setTitle(currentMonthYear);
 		monthsDifference = 0;
 			
-		// displaying SQL data
+		// displaying SQLite data in Listview
 		databaseHelper = new DBCalTri(this);
 		databaseHelper.open();
 		logAdapter = getMonthlyData(monthsDifference);
 		lvContent.setAdapter(logAdapter);
 		databaseHelper.close();
+		
+		// Setting listview clickable
 		lvContent.setEmptyView(findViewById(R.id.empty_list));
 		lvContent.setLongClickable(true);
 		lvContent.setOnItemLongClickListener(new OnItemLongClickListener() {
@@ -159,7 +170,6 @@ public class Archive extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		// The activity has become visible (it is now "resumed").
 	}
 
 	@Override
@@ -224,22 +234,12 @@ public class Archive extends Activity {
 		return true;
 	}
 
-	//@SuppressWarnings("deprecation")
-	//UNUSED
-	private SimpleCursorAdapter getEntriesAdapterCurrentMonth() {
-		// Attach all entries to adapter and output to listview
-		Cursor tempCursor = databaseHelper.fetchEntriesPastMonth();
-		startManagingCursor(tempCursor);
-		SimpleCursorAdapter entriesAdapter = new SimpleCursorAdapter(this,
-				R.layout.archive_items, tempCursor, columns, listItemTextViews);
-		stopManagingCursor(tempCursor);
-		return formatAdapter(entriesAdapter);
-	}
-	//UNUSED
+	/***
+	 * Returns a formatted SimpleCursorAdapter with training data
+	 * from all time
+	 * @return SimpleCursorAdapter Contains all training data
+	 */
 	private SimpleCursorAdapter getEntriesAdapterAll() {
-		// Attach all entries to adapter and output to listview
-		// Cursor c = databaseHelper.fetchAllEntriesBasic();
-		//Cursor c = databaseHelper.fetchEntriesCurrentWeek();
 		Cursor tempCursor = databaseHelper.fetchAllEntriesBasic();
 		startManagingCursor(tempCursor);
 		SimpleCursorAdapter entriesAdapter = new SimpleCursorAdapter(this,
@@ -248,6 +248,13 @@ public class Archive extends Activity {
 		return formatAdapter(entriesAdapter);
 	}
 	
+	/***
+	 * Returns a formatted SimpleCursorAdapter with training data
+	 * from the month supplied - e.g. -3 will give data from
+	 * 3 months ago
+	 * @param monthDifference	 The month difference from the current month
+	 * @return SimpleCursorAdapter with month's data
+	 */
 	public SimpleCursorAdapter getMonthlyData(int monthDifference){
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.MONTH, monthDifference);
@@ -263,8 +270,13 @@ public class Archive extends Activity {
 		return formatAdapter(entriesAdapter);
 	}
 	
+	/***
+	 * Updates the title of the activity with the correct date 
+	 * based on the month selected by the user.
+	 * @param monthDifference	 integer representing the month difference from the current
+	 * 							month - e.g. two months ago will be -2
+	 */
 	public void updateTitleDate(int monthDifference){
-		//updates title based on month the data being displayed is from
 		if (monthDifference==0){
 			setTitle(currentMonthYear);
 		} else {
@@ -276,6 +288,12 @@ public class Archive extends Activity {
 	}
 	
 
+	/***
+	 * Deletes the selected entry from the database
+	 * and reloads the listview.
+	 * @param tempView 	The view within the AdapterView that was clicked.
+	 * @param id 		The id of the entry to be deleted.
+	 */
 	public void deleteEntry(final View tempView, String id) {
 		idString = id;
 		AlertDialog dialogDelete = new AlertDialog.Builder(Archive.this)
@@ -309,10 +327,16 @@ public class Archive extends Activity {
 		dialogDelete.show();
 	}
 
+	////////////////////UNF////////////////////////
 	public void editEntry(String id) {
 
 	}
 
+	/***
+	 * Sorts the data in the listview by the choice 
+	 * selected by the user.
+	 * @param sortChoice	Sort by user choice
+	 */
 	public void sortBy(int sortChoice) {	
 		Cursor c = null;
 		switch (sortChoice) {
@@ -344,6 +368,12 @@ public class Archive extends Activity {
 
 	}
 
+	/***
+	 * Returns a SimpleCursorAdapter with the date in the format dd-MM-yy
+	 * and with swim, run and bike icons attached.
+	 * @param adapter	Adapter to be formated
+	 * @return	The updated adapter
+	 */
 	public SimpleCursorAdapter formatAdapter(SimpleCursorAdapter adapter) {
 		adapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
 			@Override
@@ -358,7 +388,6 @@ public class Archive extends Activity {
 						String reformattedDate = outputDateFormat
 								.format(databaseDateFormat.parse(dateStr));
 						tv.setText(reformattedDate);
-						// tv.setTextSize(8);
 					} catch (ParseException e) {
 						e.printStackTrace();
 					}

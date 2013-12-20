@@ -54,7 +54,6 @@ public class EmailArchive extends Activity {
 		
 		setContentView(R.layout.email_archive);
 		sendToEmail = (Button) findViewById(R.id.btnEmail);
-		//sendToDrive = (Button) findViewById(R.id.btnDrive);
 		saveDataToCSV = (Button) findViewById(R.id.btnSaveCSV);
 		deleteSavedData = (Button) findViewById(R.id.btnDeleteCSV);
 		fileExistsNotification = (TextView) findViewById(R.id.tvTrainingFileExists);
@@ -74,7 +73,6 @@ public class EmailArchive extends Activity {
 			        sendIntent.setType("text/plain");
 			        sendIntent.putExtra(Intent.EXTRA_SUBJECT, "Triathlon Training Log - CalTri");
 			        sendIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://"+ADDRESS_FILE));
-			        //sendIntent.putExtra(Intent.EXTRA_TEXT, "Enjoy the mail");
 			        startActivity(Intent.createChooser(sendIntent, "Email:"));
 			        emailSuccessful = true;
 				}

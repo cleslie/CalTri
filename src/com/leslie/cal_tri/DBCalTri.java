@@ -78,6 +78,7 @@ public class DBCalTri {
 		ourHelper.close();
 	}
 
+	//Create new training entry
 	public long createEntry(String strDate, String activity, Float flDistance,
 			String strComments, String strNotes, int intTime, int intIntensity) {
 		// data is packed into contentvalues and inserted into db table
@@ -101,12 +102,11 @@ public class DBCalTri {
 		ourDatabase.delete(DATABASE_TABLE, KEY_ROWID + "=" + id, null);
 	}
 
+	// returns arraylist of string arrays (each represnt row of database,
+	// not including the id column)
+	// this format is required for opencsv library to write data to .csv
+	// file in EmailArchive.java
 	public List<String[]> getAllEntriesArray() {
-
-		// returns arraylist of string arrays (each represnt row of database,
-		// not including the id column)
-		// this format is required for opencsv library to write data to .csv
-		// file in EmailArchive.java
 
 		Cursor c = ourDatabase.query(DATABASE_TABLE, new String[] { KEY_DATE,
 				KEY_ACTIVITY, KEY_DISTANCE, KEY_COMMENTS, KEY_NOTES, KEY_TIME,
@@ -140,9 +140,8 @@ public class DBCalTri {
 
 		return trainingData;
 	}
-
+	// Return a Cursor over the list of all notes in the database
 	public Cursor fetchAllEntriesBasic() {
-		// Return a Cursor over the list of all notes in the database
 		return ourDatabase.query(DATABASE_TABLE, new String[] { KEY_ROWID,
 				KEY_DATE, KEY_ACTIVITY, KEY_DISTANCE, KEY_COMMENTS }, null,
 				null, null, null, null);
@@ -172,8 +171,8 @@ public class DBCalTri {
 		return c;
 	}
 	
+	// Return a Cursor positioned at the note that matches the given rowId
 	public Cursor fetchEntry(long rowId) throws SQLException {
-		// Return a Cursor positioned at the note that matches the given rowId
 		Cursor mCursor = ourDatabase.query(true, DATABASE_TABLE, new String[] {
 				KEY_ROWID, KEY_DATE, KEY_ACTIVITY, KEY_DISTANCE, KEY_COMMENTS,
 				KEY_NOTES, KEY_TIME, KEY_INTENSITY }, KEY_ROWID + "=" + rowId,
@@ -239,10 +238,9 @@ public class DBCalTri {
 		return totalDistance;
 	}
 
+	// Returns arraylist of Strings in the format:
+	// [Totalactivities, swims, cycles, runs] for the current month
 	public ArrayList getMonthlyActivityFrequency(String month, String year) {
-
-		// Returns arraylist of Strings in the format:
-		// [Totalactivities, swims, cycles, runs] for the current month
 
 		int totalActivities = 0;
 		int numberOfSwims = 0;

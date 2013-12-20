@@ -1,0 +1,64 @@
+26/3/13:
+
+- Changed theme to Light and HoloLight(api11+)
+- Changed Pie Chart labels colour to black to accomodate new theme
+- Date output on training log screen changed to DD-MM-YY (instead of YYYY-MM-DD) and size changed to 9sp (from 11sp)
+- Refactored variable and method names in most classes to make the code more readable
+- Duplicate code deleted 
+
+01/04/13:
+- Fixed monthly date display - was not showing correct date format after sorting
+- Changed order of entry on record screen and changed 'Comments' to 'Name Activity' to emphasize its importance
+- Changed display of listview to give Name precedence, 'm' changed to 'mi'
+- Graph screen title bar now displays month and year, deleted redundant textview monthyear
+
+
+07/04/2013
+- Training log screen changes - added longclick for delete, entries now clickable for detailed information, displays message when there are no entries in the list
+- Graph - added menu for switching between graphs, line graph code started (unfinished and unused currently)
+- MainActivity moved (renamed) to MainMenu class
+
+
+
+TODO: 
+- Format new listview detailed information screen
+- Add edit option to listview onlongclick
+- Add recent suggestions for name, notes on record screen
+- Implement yearly line graph (possible from custom date ranges)
+- DONE - Add time, intensity, notes to record and database
+
+GITHUB 
+
+17/04/2013
+- Added training activity time, notes and intensity to record screen and (new) database.
+- Clicking on list items in log screen will now bring up a basic detailed information screen with the new attributes added above.
+
+GITHUB
+
+22/04/2013
+- Added new dialog to long-click of archive activity for the future implementation of editing entries
+- New launcher icon
+- Fixed bug - detailed archive previously showing one digit for seconds
+- Record Activity - Name and Distance are now required fields (will not be able to save a training session without them entered)
+
+23/04/2013-27/04/2013
+- Added new queries to database to retrive all records in a specific format for opencsv writer
+- Added ability to email a .csv file of training log via sync button (UI Improvements needed)
+- Edited Readme to reflect new usage
+
+07/05/2013
+- Added improvements to email button - confirmation messages and dialogs are now displayed
+- Added ability to delete saved data
+- Added new icons to display activity type in archive screen
+
+-LOG SCREEN BIG CHANGES
+
+GITHUB
+28/05/2013
+- Fixed bug where detailed items were displaying the wrong number of seconds
+- Added 'view all entries' to Log screen (sorting still avaliable)
+- Added new swim, cycle run icons
+- Completely revamped the process of changing months on the log screen (now uses java's calendar to calculate the exact month/year and uses that for the SQL query, instead of relying on the problematic SQL '-x months')
+
+29/05/13
+- New icons for main menu buttons and back/forward buttons on log screen (changed to imageButtons)
