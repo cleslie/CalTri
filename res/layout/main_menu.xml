@@ -48,13 +48,5 @@
         android:contentDescription="Email"
         android:src="@drawable/email" />
 
-    <ImageButton
-        android:id="@+id/bMap"
-        android:layout_width="125dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/bGraph"
-        android:layout_toRightOf="@+id/bSync"
-        android:contentDescription="Map"
-        android:src="@drawable/home" />
 
 </RelativeLayout>

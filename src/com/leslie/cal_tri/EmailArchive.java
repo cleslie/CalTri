@@ -47,7 +47,6 @@ public class EmailArchive extends Activity {
 	
 	//TODO:
 	// Check if file exists already before overwriting
-	// 
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -164,6 +163,8 @@ public class EmailArchive extends Activity {
 	public void isSDMountedToast(Boolean SDPresent){
 		if (SDPresent){
 			// SD Card present, continue writing (do nothing)
+			Toast SDNotification = Toast.makeText(getApplicationContext(), "SD card found.", Toast.LENGTH_LONG);
+			SDNotification.show();
 		} else {		
 			//no SD card - needs handled better, ie. restart activity
 			Toast noSDNotification = Toast.makeText(getApplicationContext(), "No SD card found. Attempting to email or save log may cause application to crash.", Toast.LENGTH_LONG);

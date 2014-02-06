@@ -23,8 +23,7 @@ public class DBCalTri {
 	public static final String KEY_DISTANCE = "distance";
 	public static final String KEY_COMMENTS = "comments";
 
-	// These columns added later, potential for them to be missing from some
-	// queries
+	// These columns added later, potential for them to be missing from some queries
 	public static final String KEY_NOTES = "notes";
 	public static final String KEY_TIME = "time";
 	public static final String KEY_INTENSITY = "intensity";
@@ -102,7 +101,7 @@ public class DBCalTri {
 		ourDatabase.delete(DATABASE_TABLE, KEY_ROWID + "=" + id, null);
 	}
 
-	// returns arraylist of string arrays (each represnt row of database,
+	// Returns ArrayList<String[]>(each represnt row of database,
 	// not including the id column)
 	// this format is required for opencsv library to write data to .csv
 	// file in EmailArchive.java

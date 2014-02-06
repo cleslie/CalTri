@@ -16,7 +16,6 @@ public class MainMenu extends Activity {
 	private ImageButton btnAbout;
 	private ImageButton btnGraph;
 	private ImageButton btnSync;
-	private ImageButton btnMap;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +27,6 @@ public class MainMenu extends Activity {
 		btnAbout = (ImageButton) findViewById(R.id.bAbout);
 		btnGraph = (ImageButton) findViewById(R.id.bGraph);
 		btnSync = (ImageButton) findViewById(R.id.bSync);
-		btnMap = (ImageButton) findViewById(R.id.bMap);
 
 		btnRecord.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -81,15 +79,7 @@ public class MainMenu extends Activity {
 			}
 			
 		});
-		
-		btnMap.setOnClickListener(new View.OnClickListener(){
-			@Override
-			public void onClick(View v) {
-				Intent intentMap = new Intent(MainMenu.this, MapScreen.class);
-				startActivity(intentMap);
-			}
-			
-		});
+
 	}
 
 	@Override
