@@ -60,14 +60,14 @@ public class EmailArchive extends Activity {
 		//NEED HARD CHECK FOR SD
 		isSDMountedToast(isSDPresent);
 		writeTrainingToSDCard();
-		doesFileExist();
+		fileExistNotification();
 		
 		sendToEmail.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				//second (hard) check for sd card
 				Log.e("boolean writesucces is: ", String.valueOf(writeSuccessful)); 
-				if (writeSuccessful){
+				if (fileExistNotification()){
 					Intent sendIntent = new Intent(Intent.ACTION_SEND);
 			        sendIntent.setType("text/plain");
 			        sendIntent.putExtra(Intent.EXTRA_SUBJECT, "Triathlon Training Log - CalTri");
@@ -89,7 +89,7 @@ public class EmailArchive extends Activity {
 				//NEED HARD CHECK FOR SD
 				isSDMountedToast(isSDPresent);
 				writeTrainingToSDCard();
-				doesFileExist();
+				fileExistNotification();
 			}
 		});
 		
@@ -98,7 +98,7 @@ public class EmailArchive extends Activity {
 				if (deleteFileFromSD()){
 					Toast deleteSuccessMessage = Toast.makeText(getApplicationContext(), "Saved data successfully deleted.", Toast.LENGTH_LONG);
 					deleteSuccessMessage.show();
-					doesFileExist();
+					fileExistNotification();
 				}
 				
 			}
@@ -128,6 +128,7 @@ public class EmailArchive extends Activity {
 					Toast saveSuccessMessage = Toast.makeText(getApplicationContext(), "Save Successful", Toast.LENGTH_SHORT);
 					saveSuccessMessage.show();
 					writeSuccessful = true;
+					fileExistNotification();
 
 				} catch (IOException e1) {
 					e1.printStackTrace();
@@ -172,15 +173,17 @@ public class EmailArchive extends Activity {
 		}
 	}
 	
-	public void doesFileExist(){
+	public boolean fileExistNotification(){
 		File trainingCSV = new File(ADDRESS_FILE);
 		if (trainingCSV.exists()){
 			Date lastMod = new Date(trainingCSV.lastModified());
 			fileExistsNotification.setText("Training File Found. Last modified: " + lastMod.toString());
 			fileExistsNotification.setTextColor(Color.parseColor("#66CD00"));
+			return true;
 		} else {
 			fileExistsNotification.setText("File not found.");
 			fileExistsNotification.setTextColor(Color.RED);
+			return false;
 		}
 	}
 

@@ -58,12 +58,10 @@ public class Archive extends Activity {
 	private String idString;
 	
 	//Date formats and current date
-	private final SimpleDateFormat databaseDateFormat = new SimpleDateFormat(
-			"yyyy-MM-dd");
-	private final SimpleDateFormat outputDateFormat = new SimpleDateFormat(
-			"dd-MM-yy");
-	private final SimpleDateFormat titleDateFormat = new SimpleDateFormat("MMMM yyyy");
-	private final SimpleDateFormat databaseQueryFormat = new SimpleDateFormat("yyyy-MM");
+	private final SimpleDateFormat DB_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+	private final SimpleDateFormat OUTPUT_DATE_FORMAT = new SimpleDateFormat("dd-MM-yy");
+	private final SimpleDateFormat TITLE_DATE_FORMAT = new SimpleDateFormat("MMMM yyyy");
+	private final SimpleDateFormat DB_QUERY_FORMAT = new SimpleDateFormat("yyyy-MM");
 	private String currentDisplayDate;
 	private String currentMonthYear;
 	private int monthsDifference;
@@ -76,12 +74,6 @@ public class Archive extends Activity {
 
 	protected void onCreate(Bundle savedInstanceState) {
 		
-		
-		//TODO:
-		// 1) Old sort by queries still attach all entries to adapter, need
-		// to change so that they only display current month as well.	
-		
-		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.archive_listview);
 		backButton = (ImageButton) findViewById(R.id.bBackMonth);
@@ -89,7 +81,7 @@ public class Archive extends Activity {
 		lvContent = (ListView) findViewById(R.id.list);
 		
 		//current date
-		currentMonthYear = titleDateFormat.format(new Date());
+		currentMonthYear = TITLE_DATE_FORMAT.format(new Date());
 		setTitle(currentMonthYear);
 		monthsDifference = 0;
 			
@@ -103,39 +95,43 @@ public class Archive extends Activity {
 		// Setting listview clickable
 		lvContent.setEmptyView(findViewById(R.id.empty_list));
 		lvContent.setLongClickable(true);
+		
+		//Setting edit and delete for press and hold on list items
 		lvContent.setOnItemLongClickListener(new OnItemLongClickListener() {
 			@Override
 			public boolean onItemLongClick(AdapterView<?> parent, View myView,
 					int position, long id) {
 				final String entryId = String.valueOf(id);
 				final View tempView = myView;
-				AlertDialog deleteEditChoice = new AlertDialog.Builder(
-						Archive.this).create();
+				
+				AlertDialog deleteEditChoice = new AlertDialog.Builder(Archive.this).create();
 				deleteEditChoice.setTitle("Modify Entry");
+				
+				//Edit Entry
 				deleteEditChoice.setButton2("Edit",
 						new DialogInterface.OnClickListener() {
-
 							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
+							public void onClick(DialogInterface dialog, int which) {
 								editEntry(String.valueOf(entryId));
 							}
 
 						});
-
+				
+				//Delete Entry	
 				deleteEditChoice.setButton("Delete",
 						new DialogInterface.OnClickListener() {
 							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {						
+							public void onClick(DialogInterface dialog, int which) {						
 								deleteEntry(tempView, entryId);
 							}
 						});
+				
 				deleteEditChoice.show();
 				return false;
 			}
 		});
 
+		//Show entry details for single press on list items
 		lvContent.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
@@ -146,6 +142,7 @@ public class Archive extends Activity {
 			}
 		});
 		
+		//Back one month
 		backButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -155,6 +152,7 @@ public class Archive extends Activity {
 			}
 		});
 		
+		//Forward one month
 		forwardButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -192,8 +190,7 @@ public class Archive extends Activity {
 			// sort choices
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setTitle("Sort Entries by: ");
-			final String sortItems[] = { "Date (most recent)", "Date (oldest)",
-					"Miles (descending)", "Miles (ascending)", "Activity Type" };
+			final String sortItems[] = { "Date (most recent)", "Date (oldest)","Miles (descending)", "Miles (ascending)", "Activity Type" };
 			builder.setItems(sortItems, new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int choice) {
@@ -207,9 +204,7 @@ public class Archive extends Activity {
 			break;
 
 		case R.id.menu_delete:
-			Toast deleteNotificationToast = Toast.makeText(
-					getApplicationContext(),
-					"Please select an entry to be deleted", Toast.LENGTH_LONG);
+			Toast deleteNotificationToast = Toast.makeText(getApplicationContext(), "Please select an entry to be deleted", Toast.LENGTH_LONG);
 			deleteNotificationToast.show();
 
 			lvContent.setOnItemClickListener(new OnItemClickListener() {
@@ -221,8 +216,7 @@ public class Archive extends Activity {
 						final long tempId = id;
 
 					} catch (Exception e) {
-						Log.e("ERROR delete",
-								"Error deleting entry, archive.class");
+						Log.e("ERROR delete", "Error deleting entry, archive.class");
 					}
 				}
 			});
@@ -242,8 +236,7 @@ public class Archive extends Activity {
 	private SimpleCursorAdapter getEntriesAdapterAll() {
 		Cursor tempCursor = databaseHelper.fetchAllEntriesBasic();
 		startManagingCursor(tempCursor);
-		SimpleCursorAdapter entriesAdapter = new SimpleCursorAdapter(this,
-				R.layout.archive_items, tempCursor, columns, listItemTextViews);
+		SimpleCursorAdapter entriesAdapter = new SimpleCursorAdapter(this,R.layout.archive_items, tempCursor, columns, listItemTextViews);
 		stopManagingCursor(tempCursor);
 		return formatAdapter(entriesAdapter);
 	}
@@ -258,12 +251,11 @@ public class Archive extends Activity {
 	public SimpleCursorAdapter getMonthlyData(int monthDifference){
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.MONTH, monthDifference);
-		String currentEntriesDate = databaseQueryFormat.format(cal.getTime());
+		String currentEntriesDate = DB_QUERY_FORMAT.format(cal.getTime());
 		
 		databaseHelper.open();
 		Cursor tempCursor = databaseHelper.fetchEntriesSpecificMonth(currentEntriesDate);
-		SimpleCursorAdapter entriesAdapter = new SimpleCursorAdapter(this,
-				R.layout.archive_items, tempCursor, columns, listItemTextViews);
+		SimpleCursorAdapter entriesAdapter = new SimpleCursorAdapter(this,R.layout.archive_items, tempCursor, columns, listItemTextViews);
 		stopManagingCursor(tempCursor);
 		
 		
@@ -282,7 +274,7 @@ public class Archive extends Activity {
 		} else {
 			Calendar cal = Calendar.getInstance(); 
 			cal.add(Calendar.MONTH, monthDifference);
-			currentDisplayDate = titleDateFormat.format(cal.getTime());
+			currentDisplayDate = TITLE_DATE_FORMAT.format(cal.getTime());
 			setTitle(currentDisplayDate);
 		}	
 	}
@@ -296,8 +288,7 @@ public class Archive extends Activity {
 	 */
 	public void deleteEntry(final View tempView, String id) {
 		idString = id;
-		AlertDialog dialogDelete = new AlertDialog.Builder(Archive.this)
-				.create();
+		AlertDialog dialogDelete = new AlertDialog.Builder(Archive.this).create();
 		dialogDelete.setTitle("Confirm Deletion");
 		dialogDelete.setMessage("Please confirm you wish to delete this entry");
 		dialogDelete.setButton("Ok", new DialogInterface.OnClickListener() {
@@ -385,8 +376,8 @@ public class Archive extends Activity {
 					String dateStr = cursor.getString(cursor
 							.getColumnIndex("date"));
 					try {
-						String reformattedDate = outputDateFormat
-								.format(databaseDateFormat.parse(dateStr));
+						String reformattedDate = OUTPUT_DATE_FORMAT
+								.format(DB_DATE_FORMAT.parse(dateStr));
 						tv.setText(reformattedDate);
 					} catch (ParseException e) {
 						e.printStackTrace();

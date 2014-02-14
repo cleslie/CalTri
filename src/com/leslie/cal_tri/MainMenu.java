@@ -31,8 +31,7 @@ public class MainMenu extends Activity {
 		btnRecord.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intentRecord = new Intent(MainMenu.this,
-						Record.class);
+				Intent intentRecord = new Intent(MainMenu.this, Record.class);
 				startActivity(intentRecord);
 			}
 		});
@@ -40,8 +39,7 @@ public class MainMenu extends Activity {
 		btnArchive.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intentArchive = new Intent(MainMenu.this,
-						Archive.class);
+				Intent intentArchive = new Intent(MainMenu.this, Archive.class);
 				startActivity(intentArchive);
 			}
 		});
@@ -81,12 +79,4 @@ public class MainMenu extends Activity {
 		});
 
 	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// No menu
-		// getMenuInflater().inflate(R.menu.activity_main, menu);
-		return true;
-	}
-
 }

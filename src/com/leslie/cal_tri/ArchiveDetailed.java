@@ -51,8 +51,7 @@ public class ArchiveDetailed extends Activity {
 		SimpleDateFormat titleFormat = new SimpleDateFormat("EEEE dd MMMM yyyy");
 		
 		try {
-			String reformattedDate = titleFormat.format(formatReceived
-					.parse(dateFromEntry));
+			String reformattedDate = titleFormat.format(formatReceived.parse(dateFromEntry));
 			date.setText(reformattedDate);
 		} catch (ParseException e) {
 			e.printStackTrace();

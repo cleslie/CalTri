@@ -57,8 +57,7 @@ public class Graph extends Activity {
 		SimpleDateFormat formatReceived = new SimpleDateFormat("MMyyyy");
 		SimpleDateFormat titleFormat = new SimpleDateFormat("MMMM yyyy");
 		try {
-			String reformattedDate = titleFormat.format(formatReceived
-					.parse(month + year));
+			String reformattedDate = titleFormat.format(formatReceived.parse(month + year));
 			setTitle("Activities for " + reformattedDate);
 		} catch (ParseException e) {
 			e.printStackTrace();
@@ -90,11 +89,9 @@ public class Graph extends Activity {
 		//checking if one activity for correct grammar on textview display	
 		tvTotalDistance.setText(totalDistance + " mi   ");
 		if (Integer.valueOf(monthlyData.get(0))==1){
-			tvTotalActivities.setText(monthlyData.get(0)
-				+ " activity");
+			tvTotalActivities.setText(monthlyData.get(0) + " activity");
 		} else {
-		tvTotalActivities.setText(monthlyData.get(0)
-				+ " activities");
+			tvTotalActivities.setText(monthlyData.get(0) + " activities");
 		}
 		tvMonthlyBreakdown.setText("Swims: " + monthlyData.get(1) + "  " + "Cycles: " + monthlyData.get(2) + "  " + "Runs: " + monthlyData.get(3));
 
@@ -105,7 +102,6 @@ public class Graph extends Activity {
 		//Adding activity frequency values and names to pie chart series
 		int[] activityFrequency = { Integer.valueOf(monthlyData.get(1)), Integer.valueOf(monthlyData.get(2)), Integer.valueOf(monthlyData.get(3)) };
 		String[] activitiyName = { "Swim", "Cycle", "Run" };
-			//{ monthlyData.get(1), monthlyData.get(2), monthlyData.get(3)};
 			
 		CategorySeries series = new CategorySeries("Pie Graph");
 		int k = 0;
@@ -130,24 +126,11 @@ public class Graph extends Activity {
 		renderer.setLabelsTextSize(12);
 		renderer.setLabelsColor(Color.BLACK);
 		renderer.setZoomButtonsVisible(true);
-		//renderer.setDisplayChartValues(true);
-		//renderer.setPanEnabled(false);
 		
 		GraphicalView pieView = ChartFactory.getPieChartView(getBaseContext(), series, renderer);
 		
 		return pieView;
 	}
-	
-	public GraphicalView createYearlyLine(){
-		//UNUSED
-		
-		// get data from 1 year
-			// 3 sets of miles (return in array?) format: [[mi,mi,mi.mi...], [mi,mi,mi], [mi,mi,mi,mi]]
-		// create monthly x axis
-		// create miles axis based on max?
-		// plot 
-			
-		return null;}
 
 	public String getCurrentMonth() {
 		Calendar calendar = Calendar.getInstance();
@@ -170,25 +153,4 @@ public class Graph extends Activity {
 		getMenuInflater().inflate(R.menu.graph_menu, menu);
 		return true;
 	}
-	
-	public boolean onOptionsItemSelected(MenuItem item) {
-		//switch (item.getItemId()) {
-		
-		//UNUSED currently
-	//	case R.id.menu_monthly:
-	//		currentChart.addView(createMonthlyPie());
-	//		break;
-
-	//	case R.id.menu_yearly:
-	//		currentChart.addView(createYearlyLine());
-	//		break;
-			
-	//	case R.id.menu_breakdown:
-			//activity breakdown
-	//		break;
-
-	//}
-		return true;
-
-}
 }

@@ -97,32 +97,18 @@ public class Record extends Activity {
 					boolean didItWork = true;
 					try {
 						
-						//Date formatting and validation for database
-						String day = Integer.toString(datePicker
-								.getDayOfMonth());
-						String month = Integer.toString(datePicker.getMonth() + 1);
-						String year = Integer.toString(datePicker.getYear());
-						// adding leading zeros if day/month are single digits
-						if (month.length() == 1) {
-							month = "0" + month;
-						}
-						if (day.length() == 1) {
-							day = "0" + day;
-						}
-						// Date format for database: YYYY-MM-DD
-						String dateStr = year + "-" + month + "-" + day;
+						//Get date
+						String dateStr = parseDate();
 						
-						//get user input from fields
-						String activityStr = activityType.getSelectedItem()
-								.toString();
-						Float flDistance = Float.valueOf(distance.getText()
-								.toString());
+						//Get user input from fields
+						String activityStr = activityType.getSelectedItem().toString();
+						Float flDistance = Float.valueOf(distance.getText().toString());
 						int totalSecs = combineTime();
 						String commentsStr = name.getText().toString();
 						String notesStr = notes.getText().toString();
 						int seekInt = intensity.getProgress();
 
-						//write to db
+						//Write record to db
 						DBCalTri databaseHelper = new DBCalTri(Record.this);
 						databaseHelper.open();
 						databaseHelper.createEntry(dateStr, activityStr, flDistance,
@@ -145,8 +131,7 @@ public class Record extends Activity {
 						}
 					}
 					// Change screen to training log after new entry
-					Intent intentArchive = new Intent(Record.this,
-							Archive.class);
+					Intent intentArchive = new Intent(Record.this, Archive.class);
 					startActivity(intentArchive);
 					finish();
 				}
@@ -158,15 +143,13 @@ public class Record extends Activity {
 
 	private void populateSpinner(Spinner spin) {
 		//activities array == swim, cycle, run
-		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-				this, R.array.activities_array,
-				android.R.layout.simple_spinner_item);
+		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.activities_array, android.R.layout.simple_spinner_item);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spin.setAdapter(adapter);
 	}
 
+	//returns a total of time entered in H M S boxes in seconds
 	public int combineTime() {
-		//returns a total of time entered in H M S boxes in seconds
 		int total = 0;
 		if (!isEmpty(hours)) {
 			total += 60 * 60 * Integer.parseInt(hours.getText().toString());
@@ -179,9 +162,26 @@ public class Record extends Activity {
 		}
 		return total;
 	}
+	
+	private String parseDate(){
+		//Date formatting and validation for database
+		String day = Integer.toString(datePicker.getDayOfMonth());
+		String month = Integer.toString(datePicker.getMonth() + 1);
+		String year = Integer.toString(datePicker.getYear());
+		
+		// adding leading zeros if day/month are single digits
+		if (month.length() == 1) {
+			month = "0" + month;
+		}
+		if (day.length() == 1) {
+			day = "0" + day;
+		}
+		// Date format for database: YYYY-MM-DD
+		return year + "-" + month + "-" + day;
+	}
 
+	// Checks if given edittext eText is empty, returns true if empty
 	private boolean isEmpty(EditText eText) {
-		// Checks if given edittext is empty, returns true if empty
 		if (eText.getText().toString().trim().length() > 0) {
 			return false;
 		} else {
