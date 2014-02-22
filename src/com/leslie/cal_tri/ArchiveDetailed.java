@@ -70,24 +70,12 @@ public class ArchiveDetailed extends Activity {
 		intensity.setText("Intensity " + entry.getString(entry.getColumnIndex("intensity")));
 		notes.setText(entry.getString(entry.getColumnIndex("notes")));
 		
-		//SWIM IN METERS (need to change archive main screen and graph total for
-		//full implementation)
-		//if (activityType.getText().equals("Swim")){
-			//distanceType.setText(" m in ");
-		//}
-		
 		if (notes.getText().equals("")){
 			notes.setText("No session notes.");
 		}
 		
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// No menu
-		// getMenuInflater().inflate(R.menu.activity_main, menu);
-		return true;
-	}
 	
 	private String getTime(int totalSeconds){
 		int hours = secondsFromEntry / 3600;

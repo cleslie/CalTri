@@ -1,18 +1,11 @@
 package com.leslie.cal_tri;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
+
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -23,7 +16,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,21 +24,13 @@ import au.com.bytecode.opencsv.*;
 public class EmailArchive extends Activity {
 	
 	private Button sendToEmail;
-	private Button sendToDrive;
 	private Button saveDataToCSV;
 	private Button deleteSavedData;
 	private TextView fileExistsNotification;
 	private DBCalTri databaseHelper;
 	private List<String[]> currentData;
-	public final String ADDRESS_FILE = (Environment
-			.getExternalStorageDirectory() + "/TrainingCalTri.csv");
+	public final String ADDRESS_FILE = (Environment.getExternalStorageDirectory() + "/TrainingCalTri.csv");
 	private Boolean isSDPresent = android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED);
-	String[] row = null;
-	private Boolean writeSuccessful = false;
-	private Boolean emailSuccessful = false;
-	
-	//TODO:
-	// Check if file exists already before overwriting
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -57,36 +41,31 @@ public class EmailArchive extends Activity {
 		deleteSavedData = (Button) findViewById(R.id.btnDeleteCSV);
 		fileExistsNotification = (TextView) findViewById(R.id.tvTrainingFileExists);
 		
-		//NEED HARD CHECK FOR SD
+		//Check for SD Card
 		isSDMountedToast(isSDPresent);
-		writeTrainingToSDCard();
-		fileExistNotification();
 		
+		//Start trying to save data if a file does not already exist
+		if (!fileExistNotification()){
+			writeTrainingToSDCard();
+		}
+		
+		//Send training log intent
 		sendToEmail.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				//second (hard) check for sd card
-				Log.e("boolean writesucces is: ", String.valueOf(writeSuccessful)); 
+				//Log.e("boolean writesucces is: ", String.valueOf(writeSuccessful)); 
 				if (fileExistNotification()){
 					Intent sendIntent = new Intent(Intent.ACTION_SEND);
 			        sendIntent.setType("text/plain");
 			        sendIntent.putExtra(Intent.EXTRA_SUBJECT, "Triathlon Training Log - CalTri");
 			        sendIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://"+ADDRESS_FILE));
 			        startActivity(Intent.createChooser(sendIntent, "Email:"));
-			        emailSuccessful = true;
-				}
-				
-				if (emailSuccessful){
-					//Display success message, not working correctly, displays immediately after send to email is clicked
-					//Toast saveSuccessMessage = Toast.makeText(getApplicationContext(), "Save Successful", Toast.LENGTH_SHORT);
-					//saveSuccessMessage.show();
 				}
 			}
 		});
 		
 		saveDataToCSV.setOnClickListener(new View.OnClickListener(){
 			public void onClick(View v){
-				//NEED HARD CHECK FOR SD
 				isSDMountedToast(isSDPresent);
 				writeTrainingToSDCard();
 				fileExistNotification();
@@ -108,18 +87,19 @@ public class EmailArchive extends Activity {
 	}
 
 	@SuppressWarnings("deprecation")
-	public void writeTrainingToSDCard() {
-		
+	public void writeTrainingToSDCard() {		
 		AlertDialog dialogWrite = new AlertDialog.Builder(EmailArchive.this).create();
 		dialogWrite.setTitle("Save to SD Card");
-		dialogWrite.setMessage("Save training log to SD card? (This is required in order to email your log and will overwrite previous saved data)");
+		dialogWrite.setMessage("Save training log to SD card? (Required for email - will overwrite previously saved data)");
 		dialogWrite.setButton("Ok", new DialogInterface.OnClickListener(){
 			public void onClick(DialogInterface dialog, int which) {
+				//Get data from database
 				databaseHelper = new DBCalTri(EmailArchive.this);
 				databaseHelper.open();
 				currentData = databaseHelper.getAllEntriesArray();
 				databaseHelper.close();
-
+				
+				//Convert data to .csv format for email
 				CSVWriter writer;
 				try {
 					writer = new CSVWriter(new FileWriter(ADDRESS_FILE));
@@ -127,9 +107,7 @@ public class EmailArchive extends Activity {
 					writer.close();
 					Toast saveSuccessMessage = Toast.makeText(getApplicationContext(), "Save Successful", Toast.LENGTH_SHORT);
 					saveSuccessMessage.show();
-					writeSuccessful = true;
 					fileExistNotification();
-
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
@@ -142,6 +120,8 @@ public class EmailArchive extends Activity {
 					public void onClick(DialogInterface dialog, int which) {
 					}
 				});
+		
+		//Show save option dialog
 		dialogWrite.show();
 	}
 	
@@ -173,6 +153,7 @@ public class EmailArchive extends Activity {
 		}
 	}
 	
+	//Checks if training file exists, displays notification with information about the file if it does
 	public boolean fileExistNotification(){
 		File trainingCSV = new File(ADDRESS_FILE);
 		if (trainingCSV.exists()){

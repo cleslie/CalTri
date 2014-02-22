@@ -2,45 +2,30 @@ package com.leslie.cal_tri;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.ListActivity;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
-import android.util.TypedValue;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
 
 public class Archive extends Activity {
 
@@ -106,16 +91,6 @@ public class Archive extends Activity {
 				
 				AlertDialog deleteEditChoice = new AlertDialog.Builder(Archive.this).create();
 				deleteEditChoice.setTitle("Modify Entry");
-				
-				//Edit Entry
-				deleteEditChoice.setButton2("Edit",
-						new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog, int which) {
-								editEntry(String.valueOf(entryId));
-							}
-
-						});
 				
 				//Delete Entry	
 				deleteEditChoice.setButton("Delete",
@@ -318,11 +293,6 @@ public class Archive extends Activity {
 		dialogDelete.show();
 	}
 
-	////////////////////UNF////////////////////////
-	public void editEntry(String id) {
-
-	}
-
 	/***
 	 * Sorts the data in the listview by the choice 
 	 * selected by the user.
@@ -400,7 +370,6 @@ public class Archive extends Activity {
 					}
 				}
 				
-				//BUGGY - this view is not included in adapter, that's why it's failing
 				if (column == 2 && view.getId() == R.id.archive_distance_type){
 					if (cursor.getString(column).equals("Swim")){
 						TextView distanceType = (TextView) view;
